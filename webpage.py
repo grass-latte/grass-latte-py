@@ -28,6 +28,7 @@ class _InMemoryHandler(http.server.BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(b'404 Not Found')
 
+
 def _serve_in_background():
     with socketserver.TCPServer(("", web_port), _InMemoryHandler) as httpd:
         print(f"Serving on http://127.0.0.1:{web_port}")
