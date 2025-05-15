@@ -3,15 +3,14 @@ import socketserver
 import threading
 
 from .index import HTML_SOURCE
+from .._port_range import get_port_range
 
-web_port = 8080
-
-port_range = (3030, 3035)
+DEFAULT_WEB_PORT = 8080
 
 class _InMemoryHandler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
-        global port_range
         if self.path == '/' or self.path == '/index.html':
+            port_range = get_port_range()
             html = HTML_SOURCE
             fi = html.rfind("</body>")
             html =  html[:fi] +\
@@ -29,13 +28,18 @@ class _InMemoryHandler(http.server.BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(b'404 Not Found')
 
+    def log_message(self, _format, *args):
+        pass
 
-def _serve_in_background():
-    with socketserver.TCPServer(("", web_port), _InMemoryHandler) as httpd:
-        print(f"Serving on http://127.0.0.1:{web_port}")
+
+def _serve_in_background(port: int):
+    with socketserver.TCPServer(("", port), _InMemoryHandler) as httpd:
+        print(f"Serving on http://127.0.0.1:{port}")
         httpd.serve_forever()
 
-
 def serve_webpage():
-    thread = threading.Thread(target=_serve_in_background, daemon=True)
+    serve_webpage_at_port(DEFAULT_WEB_PORT)
+
+def serve_webpage_at_port(port: int):
+    thread = threading.Thread(target=lambda: _serve_in_background(port), daemon=True)
     thread.start()

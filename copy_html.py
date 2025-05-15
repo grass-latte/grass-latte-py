@@ -10,7 +10,7 @@ source = Path(source_path)
 if not source.is_file():
     raise FileNotFoundError(f"Source file not found: {source}")
 
-destination = Path.cwd() / "grass_latte" / "webpage" / (source.name.split(".")[0] + ".py")
+destination = Path.cwd() / "grass_latte" / "_webpage" / (source.name.split(".")[0] + ".py")
 
 
 with open(source, "r") as f:
