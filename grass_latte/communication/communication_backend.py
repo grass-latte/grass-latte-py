@@ -3,6 +3,8 @@ import threading
 import websockets
 import asyncio
 
+server_running = False
+
 async def _echo(websocket):
     print(f"New connection: {websocket.remote_address}")
     async for message in websocket:
@@ -14,7 +16,14 @@ async def _start_server():
     print("Server started at ws://localhost:3030")
     await server.wait_closed()
 
-def run_server_in_background():
+def _ensure_server_running():
+    global server_running
+
+    if server_running:
+        return
+
+    server_running = True
+
     def event_loop():
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
