@@ -2,3 +2,5 @@
 
 Proof-of-concept implementation of Grass Latte for Python using the share web backend 
 (https://github.com/grass-latte/grass-latte-web)
+
+See [[tests/run_example.py]] for example usage
