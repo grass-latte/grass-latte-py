@@ -19,30 +19,30 @@ class Button(BaseModel):
     card: bool
 
 
-class ElementNode(BaseModel):
+class WidgetNode(BaseModel):
     type: Literal["node"]
     data: Node
 
-class ElementText(BaseModel):
+class WidgetText(BaseModel):
     type: Literal["text"]
     data: Text
 
-class ElementProgress(BaseModel):
+class WidgetProgress(BaseModel):
     type: Literal["progress"]
     data: Progress
 
-class ElementButton(BaseModel):
+class WidgetButton(BaseModel):
     type: Literal["button"]
     data: Button
 
-Element = Annotated[
-    Union[ElementNode, ElementText, ElementProgress, ElementButton],
+Widget = Annotated[
+    Union[WidgetNode, WidgetText, WidgetProgress, WidgetButton],
     Field(discriminator='type')
 ]
 
-class ElementPacket(BaseModel):
+class WidgetPacket(BaseModel):
     path: List[str]
-    element: Element
+    widget: Widget
 
 class DeletePacket(BaseModel):
     path: List[str]
@@ -51,9 +51,9 @@ class HandledPacket(BaseModel):
     path: List[str]
 
 
-class SendElement(BaseModel):
-    type: Literal["element"]
-    data: ElementPacket
+class SendWidget(BaseModel):
+    type: Literal["widget"]
+    data: WidgetPacket
 
 class SendDelete(BaseModel):
     type: Literal["delete"]
@@ -67,7 +67,7 @@ class SendHandled(BaseModel):
     data: HandledPacket
 
 SendTypes = Annotated[
-    Union[SendElement, SendDelete, SendClear, SendHandled],
+    Union[SendWidget, SendDelete, SendClear, SendHandled],
     Field(discriminator='type')
 ]
 

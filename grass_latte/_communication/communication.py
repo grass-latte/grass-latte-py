@@ -1,14 +1,13 @@
-import asyncio
 from ._backend import enqueue_send_object
 from ._interface import *
 
 def send_text(path: [str], text: str, card: bool):
     enqueue_send_object(
-        SendElement(
-            type="element",
-            data=ElementPacket(
+        SendWidget(
+            type="widget",
+            data=WidgetPacket(
                 path=path,
-                element=ElementText(
+                widget=WidgetText(
                     type="text",
                     data=Text(
                         text=text,
